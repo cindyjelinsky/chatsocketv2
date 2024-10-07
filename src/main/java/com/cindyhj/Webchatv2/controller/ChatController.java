@@ -1,6 +1,8 @@
 package com.cindyhj.Webchatv2.controller;
 
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import com.cindyhj.Webchatv2.model.Message;
@@ -9,19 +11,26 @@ import com.cindyhj.Webchatv2.model.Message;
 public class ChatController {
 
 
-    //private boolean isConnected =false;
-
-    
-    
+   
+    @MessageMapping("/send")
+    @SendTo("/topic/chatRoom")
     public Message sendMessage(@Payload Message message){
-        if(message.getSender().isEmpty()){
-            System.out.println("Connection Failed");
-        }else{
-            System.out.println("Connection Successful!\n");
+        if(message!=null){
+            System.out.println(message.getName()+": " + message.getContent());
            
+        }else{
+            System.out.println("Error recieving message");
         }
-        System.out.println("Client Message: " + message);
-        return message;
-       
+        return new Message();
+    }
+
+
+    @MessageMapping("/chat") // Mapeia conexões de clientes
+    public void handleSubscription(Message client) {
+        if (client != null) {
+            System.out.println("Client connected: " + client.getName());
+        } else {
+            System.out.println("Error connecting...");
+        }
     }
 }

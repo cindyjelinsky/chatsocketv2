@@ -8,7 +8,7 @@ public class Webchatv2Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Webchatv2Application.class, args);
-		System.out.println("Server Listening on port 5055:\n");
+		System.out.println("Server Listening on port 5000:\n");
 	}
 
 }
